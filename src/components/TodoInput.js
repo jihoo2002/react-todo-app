@@ -11,7 +11,7 @@ const TodoInput = ({ addTodo }) => {
   const [todoText, setTodoText] = useState('');
   //사용자가 입력할 때 그 변화하는 값을 감지하기 위해 useState 사용
 
-  //+버튼 클릭시 이벤트
+  //+ 버튼 클릭시 이벤트
   const onToggle = () => {
     setOpen(!open); //버튼 클릭시 오픈의 값을 반대로 뒤집음
   };

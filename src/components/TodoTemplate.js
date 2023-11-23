@@ -30,7 +30,7 @@ const TodoTemplate = () => {
       done: false,
     },
   ]);
-  //id값 시퀀스 함수(DB연동시키면 필요 없음)
+  //id값 시퀀스 함수 (DB연동시키면 필요 없음)
   const makeNewId = () => {
     if (todos.length === 0) return 1;
     return todos[todos.length - 1].id + 1; //맨 마지막 할일 객체의 id보다 하나 크게
@@ -71,12 +71,27 @@ const TodoTemplate = () => {
     setTodos(todos.filter((todo) => todo.id !== id)); //지금 들어오는 아이디와 일치하지 않는 아이디의 객체들을 세팅
   };
 
+  //할일 체크 처리 함수
+  const checkTodo = (id) => {
+    //이쪽으로 id의 값이 옴, done의 값을 뒤집으면 된다.
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, done: !todo.done } : todo
+      ) //매개변수로 배열 안에있는 할일 객체들이 하나씩 오게되는데, id가 맞다면 기존의 배열은 가져가면서 done은 반대로,
+      //아니면 원래 배열을 그대로 둔다.
+    );
+  };
+
+  //체크가 안된 할일의 개수 카운트 세기
+  const countRestTodo = () => todos.filter((todo) => !todo.done).length; //length를 리턴
+
   return (
     <div className='TodoTemplate'>
-      <TodoHeader />
+      <TodoHeader count={countRestTodo} />
       <TodoMain
         todoList={todos}
         remove={removeTodo}
+        check={checkTodo}
       />
       <TodoInput addTodo={addTodo} />
     </div>
