@@ -43,10 +43,10 @@ const TodoInput = ({ addTodo }) => {
               type='text'
               placeholder='할일을 입력후 엔터를 누르세요'
               onChange={todoChangeHandler}
-              value={todoText}
+              value={todoText} //여기서  벨류는 input 벨류가 아닌가??
             />
           </form>
-        </div>
+        </div> //value를 submit 보내면 입력창을 비워줘야 하기때문에 따로 핸들러를 썼음
       )}
 
       {/* 
