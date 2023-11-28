@@ -6,27 +6,33 @@ import Footer from './components/layout/Footer';
 import Join from './components/user/Join';
 import Login from './components/user/Login';
 import { Route, Routes } from 'react-router-dom';
+import { AuthContextProvider } from './utils/AuthContext';
 
 const App = () => {
   return (
-    <>
-      <Header />
-      <Routes>
-        <Route
-          path='/'
-          element={<TodoTemplate />}
-        />
-        <Route
-          path='/login'
-          element={<Login />}
-        />
-        <Route
-          path='/join'
-          element={<Join />}
-        />
-      </Routes>
-      <Footer />
-    </>
+    //데이터를 전달하고자 하는 컴포넌트들을 provider
+    <AuthContextProvider>
+      <div className='wrapper'>
+        <Header />
+        <div className='content-wrapper'>
+          <Routes>
+            <Route
+              path='/'
+              element={<TodoTemplate />}
+            />
+            <Route
+              path='/login'
+              element={<Login />}
+            />
+            <Route
+              path='/join'
+              element={<Join />}
+            />
+          </Routes>
+        </div>
+        <Footer />
+      </div>
+    </AuthContextProvider>
   );
 };
 
