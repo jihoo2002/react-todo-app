@@ -3,8 +3,22 @@ import TodoHeader from './TodoHeader';
 import TodoMain from './TodoMain';
 import TodoInput from './TodoInput';
 import './scss/TodoTemplate.scss';
+
 import { API_BASE_URL as BASE, TODO } from '../../config/host-config';
+import { useNavigate } from 'react-router-dom';
+import { getLoginUserInfo } from '../../utils/login-util';
 const TodoTemplate = () => {
+  const redirection = useNavigate();
+  //로그인 인증 토큰 얻어오기
+  const { token } = getLoginUserInfo();
+
+  // fetch 요청 보낼 때 사용할 요청 헤더 설정
+  const requestHeader = {
+    'content-type': 'application/json',
+    // JWT에 대한 인증 토큰이라는 타입을 선언
+    Authorization: 'Bearer' + token,
+  };
+
   //서버에 할 일 목록(json)을 요청(fetch)해서 받아와야함
   const API_BASE_URL = BASE + TODO; //경로 변수화해서 요긴하게 쓸거임 !
 
@@ -105,15 +119,18 @@ const TodoTemplate = () => {
   const countRestTodo = () => todos.filter((todo) => !todo.done).length; //length를 리턴
 
   useEffect(() => {
-    //페이지가 처음 렌터링 됨과 동시에 할 일 목록을 서버에 요청해서 뿌려주겠습니다.
-    fetch(API_BASE_URL)
+    // 페이지가 처음 렌더링 됨과 동시에 할 일 목록을 서버에 요청해서 뿌려 주겠습니다.
+    fetch(API_BASE_URL, {
+      method: 'GET',
+      headers: requestHeader,
+    })
       .then((res) => res.json())
       .then((json) => {
         console.log(json);
 
-        //fetch를 통해 받아온 데이터를 상태 변수에 할당.
+        // fetch를 통해 받아온 데이터를 상태 변수에 할당.
         setTodos(json.todos);
-      }); //목록 요청이니까 경로만 넣어줘도 됨
+      });
   }, []);
 
   return (
