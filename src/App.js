@@ -1,4 +1,3 @@
-import React from 'react';
 import TodoTemplate from './components/todo/TodoTemplate';
 import './App.css';
 import Header from './components/layout/Header';
@@ -7,6 +6,7 @@ import Join from './components/user/Join';
 import Login from './components/user/Login';
 import { Route, Routes } from 'react-router-dom';
 import { AuthContextProvider } from './utils/AuthContext';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
   return (
