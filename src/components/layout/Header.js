@@ -4,9 +4,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import './Header.scss';
 import { isLogin, getLoginUserInfo } from '../../utils/login-util';
 import AuthContext from '../../utils/AuthContext';
+import { API_BASE_URL, USER } from '../../config/host-config';
 
 const Header = () => {
+  const profileRequestURL = `${API_BASE_URL}${USER}/load-profile`;
+
   const redirection = useNavigate();
+
+  const [profileUrl, setProfileUrl] = useState(null);
 
   // AuthContext에서 로그인 상태를 가져옵니다. ->자식쪽 컴포넌트
   const { isLoggedIn, userName, onLogout } = useContext(AuthContext);
@@ -20,6 +25,32 @@ const Header = () => {
     onLogout();
     redirection('/login');
   };
+
+  const fetchProfileImage = async () => {
+    const res = await fetch(profileRequestURL, {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('ACCESS_TOKEN'),
+      },
+    });
+
+    if (res.status === 200) {
+      //서버에서 byte[]로 직렬화된 이미지가 응답되므로
+      // blob()을 통해 전달받아야 한다.json아님
+      const profileBlob = await res.blob(); //서버에서 응답한 데이터는 바이트 배열이니까
+      //해당 이미지를 imgUrl 로 변경
+      const imgUrl = window.URL.createObjectURL(profileBlob);
+      setProfileUrl(imgUrl);
+    } else {
+      const err = await res.text();
+      setProfileUrl(null);
+    }
+  };
+
+  useEffect(() => {
+    if (isLoggedIn) fetchProfileImage();
+  }, [isLoggedIn]); //isLoggedIn(로그인)의 상태가 변화될 때 화면이 리렌더링 되고,
+  //그에 맞는 회원의 프로필 이미지 요청이 들어갈 수 있도록 처리.
 
   return (
     <AppBar
@@ -47,6 +78,18 @@ const Header = () => {
               <Typography variant='h4'>
                 {isLoggedIn ? userName + '님' : '오늘'}의 할일
               </Typography>
+              {isLoggedIn && (
+                <img
+                  src={profileUrl || require('../../assets/img/anonymous.jpg')}
+                  alt='프사프사'
+                  style={{
+                    marginLeft: 20,
+                    width: 75,
+                    height: 75,
+                    borderRadius: '50%',
+                  }}
+                />
+              )}
             </div>
           </Grid>
 

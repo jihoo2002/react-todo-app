@@ -72,7 +72,6 @@ const TodoTemplate = () => {
     } else if (res.status === 401) {
       alert('일반 회원은 일정 등록이 5개로 제한됩니다 ㅜㅜ');
     }
-
     // fetch(API_BASE_URL, {
     //   method: 'POST',
     //   headers: { 'content-type': 'application/json' },
@@ -135,7 +134,7 @@ const TodoTemplate = () => {
     });
 
     if (res.status === 403) {
-      alert('이미 프리미엄 회원입니다. ');
+      alert('이미 프리미엄 회원입니다.');
     } else if (res.status === 200) {
       const json = await res.json();
 

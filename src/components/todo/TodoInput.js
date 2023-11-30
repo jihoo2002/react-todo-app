@@ -24,6 +24,11 @@ const TodoInput = ({ addTodo }) => {
   const submitHandler = (e) => {
     e.preventDefault(); //태그의 기본 기능 제한(submit 막기)
 
+    if (todoText.length < 2) {
+      //사용자 입력값이 2글자 미만일떄
+      alert('할 일 입력은 최소 2글자 이상 작성하셔야 합니다');
+      return;
+    }
     //부모 컴포넌트가 전달한 함수의 매개값으로 입력값 넘기기.
     addTodo(todoText);
 
