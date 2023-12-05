@@ -17,7 +17,8 @@ const TodoTemplate = () => {
   const requestHeader = {
     'content-type': 'application/json',
     // JWT에 대한 인증 토큰이라는 타입을 선언
-    Authorization: 'Bearer ' + token,
+    Authorization: 'Bearer ' + token, //여기서 null이 오면 널처럼 생긴 문자열 null이 전달된것임
+    //그래서 필터쪽에서 equal null인 것도 안된다고 막아줘야 한다.
   };
 
   //서버에 할 일 목록(json)을 요청(fetch)해서 받아와야함
